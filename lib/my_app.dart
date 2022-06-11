@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/providers/main_provider.dart';
+import 'package:movie_app/resource/routes_manager.dart';
 import 'package:provider/provider.dart';
 
 class MovieApp extends StatefulWidget {
@@ -27,15 +28,6 @@ class MovieAppState extends State<MovieApp> {
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
               navigatorKey: MovieApp.navigatorKey,
-              localizationsDelegates: const [
-                S.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate
-              ],
-              supportedLocales: S.delegate.supportedLocales,
-              localeListResolutionCallback:
-                  S.delegate.listResolution(fallback: const Locale('en', '')),
               routes: Routes.routes,
               onGenerateRoute: Routes.getRoutes,
             ),
