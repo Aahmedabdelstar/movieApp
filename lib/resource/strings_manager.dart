@@ -7,5 +7,7 @@ class AppStrings {
   static const acceptKey = "Accept";
   static const tokenKey = "token";
   static const appLangKey = "locale";
+  static const apiKey = "api_key";
+  static const apiKeyValue = "2c85962695c6f37f3009b734dfbba442";
 
 }

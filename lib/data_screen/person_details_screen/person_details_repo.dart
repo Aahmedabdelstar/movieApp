@@ -1,44 +1,47 @@
+
+
 import 'package:flutter/material.dart';
 
 import '../../data/models/api_response.dart';
+import '../../data/models/person_image_model.dart';
 import '../../data/models/repository_model.dart';
-import '../../data/models/popular_person_model.dart';
 import '../../data/web_services.dart';
-import '../../resource/end_points_manager.dart';
 import '../../resource/strings_manager.dart';
 
+class PersonDetailsRepository {
+  PersonDetailsRepository._internal();
 
-class HomeViewRepository {
-  HomeViewRepository._internal();
+  static final PersonDetailsRepository _singleton = PersonDetailsRepository._internal();
 
-  static final HomeViewRepository _singleton = HomeViewRepository._internal();
-
-  factory HomeViewRepository() {
+  factory PersonDetailsRepository() {
     return _singleton;
   }
 
 
-  Future<RepositoryModel> getPopularPeople() async {
+
+
+
+  Future<RepositoryModel> getPersonImages(int personId) async {
     try {
       ApiResponse response = await WebService.callApi(
-          EndPointsStrings.getPopularPeopleEndPoint,
+          'person/$personId/images',
           apiMethodType: ApiMethodType.get,
-        queryParameters: {
-          AppStrings.apiKey: AppStrings.apiKeyValue,
-        }
+          queryParameters: {
+            AppStrings.apiKey: AppStrings.apiKeyValue,
+          }
       );
       if (response.statusCode == 200) {
-        List<PopularPersonModel> popularPersonList = [];
+        List<PersonImageModel> personImagesList = [];
 
         debugPrint("response.body ${response.body}");
 
 
         for (var item in response.body) {
-          popularPersonList.add(PopularPersonModel.fromJson(item));
+          personImagesList.add(PersonImageModel.fromJson(item));
         }
         return RepositoryModel(
           success: true,
-          data: popularPersonList,
+          data: personImagesList,
         );
       } else {
         return RepositoryModel(success: false, message: response.message!);
@@ -48,6 +51,9 @@ class HomeViewRepository {
           success: false, message: "There is en error");
     }
   }
+
+
+
 
 
 }

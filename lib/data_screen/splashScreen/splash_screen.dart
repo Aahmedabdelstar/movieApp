@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/data_screen/home_page_screen/home_view.dart';
 import 'package:movie_app/utils/navigators.dart';
 import '../../providers/main_provider.dart';
+import '../../resource/assets_manager.dart';
 import '../../resource/color_manager.dart';
 import '../../utils/helpers_functions.dart';
 
@@ -48,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                Images().logoTextSplashScreen,
+                ImageAssets.logoSplashScreen,
                 width: widthOfScreen(context) * 0.3,
               ),
             ],

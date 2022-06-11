@@ -29,6 +29,13 @@ dependencies:
   #for loading
   skeletons: ^0.0.3
 
+  #for preview image
+  cached_network_image: ^3.2.0
+
+  # to scroll images in toy details
+  carousel_slider: ^4.0.0
+
+
 
 
 dev_dependencies:
@@ -42,3 +49,18 @@ flutter:
 
   uses-material-design: true
 
+
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo-Black.ttf
+        - asset: assets/fonts/Cairo-Bold.ttf
+        - asset: assets/fonts/Cairo-ExtraLight.ttf
+        - asset: assets/fonts/Cairo-Light.ttf
+        - asset: assets/fonts/Cairo-Regular.ttf
+        - asset: assets/fonts/Cairo-SemiBold.ttf
+
+  assets:
+    - assets/
+    - assets/fonts/
+    - assets/images/

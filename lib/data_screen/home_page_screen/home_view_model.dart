@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmvvm/pmvvm.dart';
+import '../../data/models/popular_person_model.dart';
 import '../../data/models/repository_model.dart';
 import '../../utils/helpers_functions.dart';
 import 'home_view_rep.dart';
@@ -17,53 +18,38 @@ class HomeViewModel extends ViewModel {
 
 
 
-  // List<ToyCategoryModel> homePageCategories = [];
-  bool searchResult = false;
-  bool newToysAdded = false;
+  List<PopularPersonModel> popularPeopleList = [];
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
 
   @override
   init() {
-    getExploreToysData();
+    getPopularPeople();
   }
 
 
-
-
-
-
-  getExploreToysData() async {
+  getPopularPeople() async {
     _isLoading = true;
     _hasData = false;
     notifyListeners();
-    RepositoryModel repositoryModel = await HomeViewRepository().getToysCategories();
+    RepositoryModel repositoryModel = await HomeViewRepository().getPopularPeople();
+
+    debugPrint("model ${repositoryModel.stateCode}");
+    debugPrint("model ${repositoryModel.data}");
+
     if (repositoryModel.success) {
-      // homePageCategories = repositoryModel.data;
+      popularPeopleList = repositoryModel.data;
+
+      debugPrint("popularPeopleList $popularPeopleList");
+
       _isLoading = false;
       _hasData = true;
-    }else{
+    }else if (repositoryModel.stateCode == 502){
       showSnackBar(scaffoldKey, "Check Internet Connection");
     }
     _isLoading = false;
     notifyListeners();
   }
-
-
-  setToyFavourite(){
-
-  }
-
-  callApiAnotherTime(){
-    _hasData = false;
-  }
-
-  refreshToys(){
-    _hasData = false;
-    getExploreToysData();
-  }
-
-
 
 
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/data_screen/home_page_screen/widgets/popular_person_card.dart';
 import 'package:movie_app/providers/main_provider.dart';
 import 'package:pmvvm/pmvvm.dart';
 import '../../widgets/app_bar.dart';
@@ -29,14 +30,16 @@ class _HomeView extends StatelessView<HomeViewModel> {
 
   @override
   Widget render(BuildContext context, HomeViewModel viewModel) {
-    final helpProvider = Provider.of<MainProvider>(context, listen: true);
+    final mainProvider = Provider.of<MainProvider>(context, listen: true);
+
 
 
     return Scaffold(
       key: viewModel.scaffoldKey,
       appBar: const CustomAppBar(
         title: "Home",
-
+        elevation: 1,
+        leadingIcon: Icon(Icons.menu,color: Colors.black,),
       ),
       body: viewModel.isLoading
           ? const ToysLoadingCardAnimations(
@@ -46,16 +49,32 @@ class _HomeView extends StatelessView<HomeViewModel> {
         child: Column(
           children: [
 
-            /// category
-            ListView.builder(
-              itemCount: 5,
+            GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.only(bottom: 15),
               shrinkWrap: true,
-              itemBuilder: (context, item) {
-                return Container();
+              itemCount: viewModel.popularPeopleList.length,
+              padding: const EdgeInsets.only(
+                  bottom: 20,
+                  left: 8,
+                  right: 8,
+                  top: 10),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 3 / 4,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 10,
+                  crossAxisCount: 2),
+              itemBuilder: (BuildContext context, int index) {
+                return PopularPersonCard(
+                  image: viewModel.popularPeopleList[index].profilePath ?? '',
+                  name: viewModel.popularPeopleList[index].name,
+
+                  cardOnTap: () {},
+
+                );
               },
-            ),
+            )
+
+
           ],
         ),
       ),

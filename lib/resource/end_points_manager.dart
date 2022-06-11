@@ -1,13 +1,7 @@
 class EndPointsStrings {
-  static const baseUrl = "https://master.etoyapp.com/api/";
-  static const secondURL = "https://master.etoyapp.com/";
+  static const baseUrl = "https://api.themoviedb.org/3/";
 
-
-
-  static const toysCategoriesEndPoint = "etoypaper-application/toyspapercat";
-
-
-
+  static const getPopularPeopleEndPoint = "person/popular";
 
 
 }

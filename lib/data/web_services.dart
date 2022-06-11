@@ -23,9 +23,9 @@ class WebService {
     required ApiMethodType apiMethodType,
     Map<String, dynamic>? queryParameters,
     int timeout= AppConstants.connectionTimeOut}) async {
-
-
     var headers;
+
+
 
 
     String language = await getString(AppStrings.languageKey, AppStrings.defaultLanguageKey);
@@ -36,7 +36,7 @@ class WebService {
         AppStrings.appLangKey: language, AppStrings.authorizationKey: '${AppStrings.bearerKey} $token'};
     }else{
        headers = header ?? { AppStrings.acceptKey : 'application/json',
-        AppStrings.appLangKey: language };
+        AppStrings.appLangKey: language, };
     }
 
 
@@ -81,8 +81,6 @@ class WebService {
       return BuildResponseOut.buildResponseOut(response);
     }
     catch (_error) {
-      debugPrint("Erro: ${formData.toString()}");
-
       DioError error = _error as DioError;
       debugPrint("Error BODY: ${formData.toString()}");
       debugPrint("Error HEADER: ${headers.toString()}");
