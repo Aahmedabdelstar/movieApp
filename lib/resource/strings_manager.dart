@@ -5,5 +5,7 @@ class AppStrings {
   static const defaultLanguageKey = "en";
   static const bearerKey = "Bearer";
   static const acceptKey = "Accept";
+  static const tokenKey = "token";
+  static const appLangKey = "locale";
 
 }

@@ -19,6 +19,12 @@ dependencies:
   provider: ^6.0.2
   pmvvm: ^3.0.0
 
+  #to dealing with apis
+  dio: ^4.0.6
+
+  #to dealing with locale storage
+  shared_preferences: ^2.0.7
+
 
 dev_dependencies:
   flutter_test:
