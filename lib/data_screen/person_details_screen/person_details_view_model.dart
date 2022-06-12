@@ -3,6 +3,7 @@ import 'package:movie_app/data_screen/person_details_screen/person_details_repo.
 import 'package:pmvvm/pmvvm.dart';
 
 import '../../data/models/person_image_model.dart';
+import '../../data/models/popular_person_model.dart';
 import '../../data/models/repository_model.dart';
 import '../../providers/main_provider.dart';
 import '../../utils/helpers_functions.dart';
@@ -16,7 +17,7 @@ class PersonDetailsViewModel extends ViewModel {
 
   bool get hasData => _hasData;
 
-
+  PopularPersonModel? personSelected;
   List<PersonImageModel> personImagesList = [];
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int selectedImageIndex = 0;
@@ -25,8 +26,8 @@ class PersonDetailsViewModel extends ViewModel {
 
   @override
   init() {
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
-    getPersonImages(personId: mainProvider.selectedPersonModel!.id!);
+    personSelected = ModalRoute.of(context)!.settings.arguments as PopularPersonModel;
+    getPersonImages(personId: personSelected!.id!);
   }
 
 

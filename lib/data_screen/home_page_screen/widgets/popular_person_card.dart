@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/providers/main_provider.dart';
 import 'package:movie_app/resource/assets_manager.dart';
 import 'package:movie_app/resource/color_manager.dart';
+import 'package:movie_app/resource/end_points_manager.dart';
 import 'package:movie_app/resource/font_manager.dart';
 import 'package:movie_app/utils/navigators.dart';
 import 'package:pmvvm/pmvvm.dart';
@@ -38,9 +39,7 @@ class PopularPersonCard extends StatelessWidget {
     final helpProvider = Provider.of<MainProvider>(context, listen: true);
 
     return GestureDetector(
-      onTap: cardOnTap ?? (){
-        pushNamedRoute(context, PersonDetailsView.routeName);
-      } ,
+      onTap: cardOnTap ?? (){},
       child: Card(
         elevation: 1,
         shape: RoundedRectangleBorder(
@@ -67,18 +66,16 @@ class PopularPersonCard extends StatelessWidget {
                 child: GestureDetector(
                   child: Stack(
                     children: [
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: CachedNetworkImage(
-                            imageUrl: "http://image.tmdb.org/t/p/w500$image",
-                            // alignment: Alignment.center,
-                            fit: BoxFit.fitWidth,
-                            placeholder: (context, url) => Container(),
-                            errorWidget: (context, url, error) => SizedBox(
-                              child: Image.asset(ImageAssets.logoSplashScreen,
-                                fit: BoxFit.fitWidth,
-                              ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: CachedNetworkImage(
+                          imageUrl: "${EndPointsStrings.imageBaseUrlEndPoint}$image",
+                          // alignment: Alignment.center,
+                          fit: BoxFit.fitWidth,
+                          placeholder: (context, url) => Container(),
+                          errorWidget: (context, url, error) => SizedBox(
+                            child: Image.asset(ImageAssets.logoSplashScreen,
+                              fit: BoxFit.fitWidth,
                             ),
                           ),
                         ),

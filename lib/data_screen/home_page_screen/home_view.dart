@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/data_screen/home_page_screen/widgets/popular_person_card.dart';
 import 'package:movie_app/providers/main_provider.dart';
 import 'package:pmvvm/pmvvm.dart';
+import '../../utils/navigators.dart';
 import '../../widgets/app_bar.dart';
-import '../../widgets/toys_loading_card_list.dart';
+import '../../widgets/loading_card_list.dart';
+import '../person_details_screen/person_details_view.dart';
 import 'home_view_model.dart';
 
 
@@ -42,42 +44,33 @@ class _HomeView extends StatelessView<HomeViewModel> {
         leadingIcon: Icon(Icons.menu,color: Colors.black,),
       ),
       body: viewModel.isLoading
-          ? const ToysLoadingCardAnimations(
+          ? const LoadingCardAnimations(
         listCount: 4,
       )
-          : SingleChildScrollView(
-        child: Column(
-          children: [
+          : GridView.builder(
+            itemCount: viewModel.popularPeopleList.length,
+            padding: const EdgeInsets.only(
+                bottom: 20,
+                left: 8,
+                right: 8,
+                top: 10),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: 3 / 4,
+                crossAxisSpacing: 15,
+                mainAxisSpacing: 10,
+                crossAxisCount: 2),
+            itemBuilder: (BuildContext context, int index) {
+              return PopularPersonCard(
+                image: viewModel.popularPeopleList[index].profilePath ?? '',
+                name: viewModel.popularPeopleList[index].name,
 
-            GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: viewModel.popularPeopleList.length,
-              padding: const EdgeInsets.only(
-                  bottom: 20,
-                  left: 8,
-                  right: 8,
-                  top: 10),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 3 / 4,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 10,
-                  crossAxisCount: 2),
-              itemBuilder: (BuildContext context, int index) {
-                return PopularPersonCard(
-                  image: viewModel.popularPeopleList[index].profilePath ?? '',
-                  name: viewModel.popularPeopleList[index].name,
+                cardOnTap: () {
+                  pushNamedRoute(context, PersonDetailsView.routeName,arguments: viewModel.popularPeopleList[index]);
+                },
 
-                  cardOnTap: () {},
-
-                );
-              },
-            )
-
-
-          ],
-        ),
-      ),
+              );
+            },
+          ),
     );
   }
 }

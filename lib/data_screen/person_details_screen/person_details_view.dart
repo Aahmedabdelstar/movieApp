@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/data_screen/person_details_screen/person_details_view_model.dart';
 import 'package:movie_app/providers/main_provider.dart';
@@ -8,11 +9,13 @@ import 'package:pmvvm/pmvvm.dart';
 import '../../resource/assets_manager.dart';
 import '../../resource/color_manager.dart';
 import '../../resource/constants_manager.dart';
+import '../../resource/end_points_manager.dart';
 import '../../resource/font_manager.dart';
 import '../../resource/values_manager.dart';
 import '../../utils/helpers_functions.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/custom_text.dart';
+import '../image_full_screen_.dart';
 
 class PersonDetailsView extends StatelessWidget {
   static const String routeName = "/PersonDetailsView";
@@ -33,22 +36,18 @@ class _PersonDetailsView extends StatelessView<PersonDetailsViewModel> {
 
   @override
   Widget render(BuildContext context, PersonDetailsViewModel viewModel) {
-    final helpProvider = Provider.of<MainProvider>(context, listen: true);
 
 
     return Scaffold(
       appBar: const CustomAppBar(
         elevation: 1,
-        actionIcons: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppConstants.paddingLeftAndRightScreen),
-            child: Icon(Icons.more_vert,size: AppConstants.appBarIconSize,),
-          )
-        ],
+        title: "Person Profile",
+        leadingIcon: Icon(Icons.arrow_back,color: Colors.black,),
       ),
       backgroundColor: ColorManager.greyBackgroundColor,
       body: Column(
         children: [
+
 
 
 
@@ -58,26 +57,37 @@ class _PersonDetailsView extends StatelessView<PersonDetailsViewModel> {
               children: [
 
                 // helpProvider.selectedToy!.images!.length>1 ?
-                ClipRRect(
-                  borderRadius:
-                  const BorderRadius.only(
-                    bottomRight: Radius.circular(30.0),
-                    bottomLeft: Radius.circular(30.0),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    autoPlay:true,
+                    enlargeCenterPage: true,
+                    height: heightOfScreen(context) * .45,
+                    aspectRatio: 0.6,
+                    viewportFraction: 1,
+                    scrollDirection: Axis.horizontal,
+                    onPageChanged: (index, reason) {},
                   ),
-                  child: SizedBox(
-                    width: widthOfScreen(context),
-                    height: 400,
-                    child: Stack(
-                      children: [
-                        ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: viewModel.personImagesList.length,
-                          itemBuilder: (context,index){
-                            return  CachedNetworkImage(
+                  items: viewModel.personImagesList.map(
+                        (item) => InkWell(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
+                                  return ImageFullScreen(
+                                    imageUrl: '${EndPointsStrings.imageBaseUrlEndPoint}${item.filePath}',
+                                  );
+                                }));
+                          },
+                          child:  ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                  bottomRight: Radius.circular(25),
+                                  bottomLeft: Radius.circular(25)
+                              ),
+
+
+                            child: CachedNetworkImage(
                               width: MediaQuery.of(context).size.width,
-                              // height: MediaQuery.of(context).size.height,
                               fit: BoxFit.cover,
-                              imageUrl:  viewModel.personImagesList[index].filePath ?? '',
+                              imageUrl:  '${EndPointsStrings.imageBaseUrlEndPoint}${item.filePath}',
                               alignment: Alignment.center,
                               placeholder: (context, url) => Container(),
                               errorWidget: (context, url, error) => SizedBox(
@@ -88,53 +98,17 @@ class _PersonDetailsView extends StatelessView<PersonDetailsViewModel> {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                            );
-                          },
-                        ),
-
-
-                        Positioned(
-                          bottom: 15,
-                          left: 30,
-                          right: 30,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children:  [
-
-
-
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 5),
-                                child: Row(
-                                  children: _buildPageIndicator(context,viewModel),
-                                ),
-                              ),
-
-
-
-
-
-
-
-                            ],
+                            ),
                           ),
-                        )
-
-
-                      ],
-                    ),
-                  ),
+                        ),
+                  ).toList(),
                 ),
-
-
-
-
 
 
 
                 const SizedBox(height: 20,),
 
-                // name toy and age
+                // name person
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: AppConstants.paddingLeftAndRightScreen
@@ -145,7 +119,7 @@ class _PersonDetailsView extends StatelessView<PersonDetailsViewModel> {
                       // name of toy
                       Expanded(
                         child: CustomText(
-                          title: helpProvider.selectedPersonModel!.name ?? '',
+                          title: viewModel.personSelected?.name ?? '',
                           size: percentHeightAndWidthOfScreen(context) *
                               AppSize.s10,
                           maxLines: 2,
@@ -161,50 +135,42 @@ class _PersonDetailsView extends StatelessView<PersonDetailsViewModel> {
                 divider(marginVertical: 10, marginHorizontal: 5),
 
 
+                // name toy and age
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppConstants.paddingLeftAndRightScreen
+                  ),
+                  child: Row(
+                    children: [
+
+                      // name of toy
+                      Expanded(
+                        child: CustomText(
+                          title: viewModel.personSelected?.gender == 2 ? 'Male' : 'Female' ,
+                          size: percentHeightAndWidthOfScreen(context) *
+                              AppSize.s10,
+                          maxLines: 2,
+                          fontWeight: FontWeightManager.medium,
+                        ),
+                      ),
+
+
+                    ],
+                  ),
+                ),
+
 
 
 
               ],
             ),
           ),
-
-
-
-
-
         ],
       ),
     );
   }
 
-
-  List<Widget> _buildPageIndicator(
-      BuildContext context, PersonDetailsViewModel viewModel) {
-    final pageDataProvider = Provider.of<MainProvider>(context, listen: true);
-
-    List<Widget> list = [];
-    for (int i = 0; i < viewModel.personImagesList.length; i++) {
-      list.add(
-          i == viewModel.selectedImageIndex ? _indicator(true) : _indicator(false));
-    }
-    return list;
-  }
-
-  Widget _indicator(bool isActive) {
-    return AnimatedContainer(
-      duration: Duration.zero,
-      margin: const EdgeInsets.symmetric(horizontal: 8.0),
-      height: 8.0,
-      width: isActive ? 24.0 : 16.0,
-      decoration: BoxDecoration(
-        color: isActive ? ColorManager.primaryColor : ColorManager.greyColor,
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-      ),
-    );
-  }
-
-
-
+  
 
 }
 

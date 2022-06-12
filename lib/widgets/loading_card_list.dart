@@ -4,10 +4,10 @@ import 'package:skeletons/skeletons.dart';
 import '../resource/constants_manager.dart';
 import '../utils/helpers_functions.dart';
 
-class ToysLoadingCardAnimations extends StatelessWidget {
+class LoadingCardAnimations extends StatelessWidget {
   final int? listCount;
 
-  const ToysLoadingCardAnimations({Key? key, this.listCount}) : super(key: key);
+  const LoadingCardAnimations({Key? key, this.listCount}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

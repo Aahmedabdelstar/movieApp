@@ -10,23 +10,17 @@ class BuildResponseOut{
   static ApiResponse buildResponseOut(Response response) {
     ApiResponse apiResponse = ApiResponse();
     debugPrint("response1 ${response.data}");
-    // var response = WebService.decodeResp(response1);
     if (response.statusCode == 200) {
       if(response.data['error'] != null){
-        debugPrint("error after status code 200");
         apiResponse.statusCode = 199;  //password incorrect
         apiResponse.status = false;
         apiResponse.message = response.data['error'];
         apiResponse.body = response.data['error'];
       }else{
-        debugPrint("result after status code 200");
-        debugPrint("result after status code 2002");
-        debugPrint("result after status code 2003");
-
         apiResponse.statusCode = 200;
         apiResponse.status = response.data['code'] ?? true;
         apiResponse.message = response.data['message'] ?? '';
-        apiResponse.body = response.data['results'];
+        apiResponse.body = response.data['results']??response.data['profiles'];
 
       }
     } else if (response.statusCode == 401) {
